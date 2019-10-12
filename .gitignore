@@ -24,3 +24,9 @@ coverage
 build/
 dist/
 
+#ignore .env files for secret keys
+.env
+
+
+#aws secret keys
+database/awsconfig.js
