@@ -12,32 +12,13 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(express.static(path.join(__dirname, '/../client/dist')));
+app.use(express.static(path.join(__dirname, '/../public')));
 
 
 app.get('/:productName', (req, res) => {
-  res.sendFile((path.join(__dirname + '/../client/dist/index.html')))
+  res.sendFile((path.join(__dirname + '/../public/index.html')))
 })
 
-// app.get('/buy/*', (req,res) => {
-//   res.sendFile(path.join(__dirname, '/../client/dist/index.html'))
-// });
-
-
-
-
-
-
-// app.get('/api/getAllProducts', (req,res) => {
-//   Images.find((err,results) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log(results);
-//       res.json(results);
-//     }
-//   })
-// })
 
 app.get('/api/:productName', (req,res) => {
   console.log(req.params.productName);
