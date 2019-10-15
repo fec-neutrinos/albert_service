@@ -15,10 +15,9 @@ class Carousel extends Component {
   getPhotos() {
     let productName = window.location.pathname
     let url = `/api${productName}`;
-
     axios.get(url)
       .then(response => {
-        console.log('client', response.data.images);
+        // console.log('client', response.data.images);
         this.setState({
           images: response.data.images,
           productName: response.data.productName
