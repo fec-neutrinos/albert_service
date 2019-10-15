@@ -21,14 +21,15 @@ app.get('/:productName', (req, res) => {
 
 
 app.get('/api/:productName', (req,res) => {
-  console.log(req.params.productName);
+  // console.log(req.params.productName);
   Images.find({
     productName : req.params.productName
   }, (err, results) => {
     if (err) {
       console.log('err', err);
     } else {
-      res.json(results);
+      // console.log(results[0]);
+      res.json(results[0]);
     }
   });
 });
