@@ -13,11 +13,16 @@ class Carousel extends Component {
     this.getPhotos();
   };
   getPhotos() {
-    let productName = window.location.pathname
-    let url = `/api${productName}`;
+    //For production builds
+    // let productName = window.location.pathname;
+    // let url = `http://localhost:3001/api${productName}`;
+
+    //For development purposes
+    // add productName existing in the seeded DB
+    let productName = /*fix me*/
+    let url = `http://localhost:3001/api/${productName}`
     axios.get(url)
       .then(response => {
-        // console.log('client', response.data.images);
         this.setState({
           images: response.data.images,
           productName: response.data.productName
