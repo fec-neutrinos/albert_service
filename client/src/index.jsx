@@ -2,7 +2,7 @@ import React, { Fragment, Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import axios from 'axios';
-import Carousel from './components/carousel.jsx';
+
 import CarouselPage from './components/CarouselPage.jsx';
 
 class App extends Component {
@@ -11,7 +11,6 @@ class App extends Component {
   }
   render() {
     return (
-      // <Carousel />
       <CarouselPage></CarouselPage>
     )
   }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
 // import Carousel from './carousel.jsx';
-import Carousel2 from './Carousel2.jsx';
-import Image from './image.jsx';
+import Carousel from './Carousel.jsx';
 import Item from './Item.jsx';
 import axios from 'axios';
 import styled, { css } from 'styled-components';
@@ -13,9 +12,7 @@ class CarouselPage extends Component {
     super(props);
     this.state = {
       images: [],
-      productName: '',
-      currentIndex: 0, /*This will help determine current image displayed on the carousel */
-      translateValue: 0
+      productName: ''
     };
   };
   componentDidMount() {
@@ -32,7 +29,7 @@ class CarouselPage extends Component {
     let url = `http://localhost:3001/api/${productName}`
     axios.get(url)
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         this.setState({
           images: response.data.images,
           productName: response.data.productName
@@ -43,15 +40,10 @@ class CarouselPage extends Component {
       })
   }
   render() {
-    // const Item = styled.div`
-    //   background: darkorange;
-    //   text-align: center;
-    //   padding: 50px;
-    //   color: white;
-    // `
+
     return (
       <div>
-        <Carousel2>
+        <Carousel>
           {this.state.images.map((image, i) => {
             return (
               <Item
@@ -61,7 +53,7 @@ class CarouselPage extends Component {
               </Item>
             )
           })}
-        </Carousel2>
+        </Carousel>
       </div>
     )
   }

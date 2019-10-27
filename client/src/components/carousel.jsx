@@ -1,88 +1,97 @@
-import React, { Component, Fragment } from 'react';
-import axios from 'axios';
-import Image from './image.jsx';
-import NextArrow from './nextArrow.jsx';
-import PrevArrow from './PrevArrow.jsx';
+import React, { Component } from 'react';
 
-import styled, {css} from 'styled-components';
 
+import Wrapper from './Wrapper.jsx';
+import CarouselSlot from './CarouselSlot.jsx';
+import CarouselContainer from './CarouselContainer.jsx';
+import Indicator from './Indicator.jsx';
 
 class Carousel extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      images: [],
-      productName: '',
-      currentIndex: 0, /*This will help determine current image displayed on the carousel */
-      translateValue: 0
-    };
-  };
-  componentDidMount() {
-    this.getPhotos();
-  };
-  getPhotos() {
-    //For production builds
-    // let productName = window.location.pathname;
-    // let url = `http://localhost:3001/api${productName}`;
-
-    //For development purposes
-    // add productName existing in the seeded DB
-    let productName = 'small-wooden-pizza';
-    let url = `http://localhost:3001/api/${productName}`
-    axios.get(url)
-      .then(response => {
-        console.log(response.data);
-        this.setState({
-          images: response.data.images,
-          productName: response.data.productName
-        });
-      })
-      .catch(error => {
-        console.log('error retrieving product details', error);
-      })
+      position: 0,
+      sliding: false,
+      direction: 'next'
+    }
+    this.previousSlide = this.previousSlide.bind(this);
+  }
+  getOrder(itemIndex) {
+    const { position } = this.state;
+    const { children } = this.props;
+    const numItems = children.length || 1;
+    if (itemIndex - position < 0) {
+      return numItems - Math.abs(itemIndex - position);
+    }
+    return itemIndex - position;
   }
 
-  nextImage() {
-    if (this.state.currentIndex === this.state.images.length - 1) {
-      return this.setState({
-        currentIndex: 0
-      });
-    }
-    this.setState(prevState => ({
-      currentIndex: prevState.currentIndex + 1
-    }));
-  };
+  nextSlide() {
+    const { position } = this.state;
+    const { children } = this.props;
+    const numItems = children.length || 1;
+    this.setState({
+      position: position === numItems - 1 ? 0 : position + 1
+    });
+    this.doSliding('next', position === numItems - 1 ? 0 : position + 1);
+  }
 
-  previousImage() {
-    if (this.state.currentIndex === 0) {
-      return this.setState({
-        currentIndex: this.state.images.length - 1
-      });
-    }
-    this.setState(prevState => ({
-      currentIndex: prevState.currentIndex - 1
-    }));
+  previousSlide() {
+    const { position } = this.state;
+    const { children } = this.props;
+    const numItems = children.length;
+    this.setState({
+      position: position === 0 ? numItems - 1 : position - 1
+    });
+    this.doSliding('prev', position === 0 ? numItems - 1 : position - 1);
+  }
+
+  doSliding(direction, position) {
+    this.setState({
+      sliding: true,
+      direction: direction
+    })
+    setTimeout(() => {
+      this.setState({
+        sliding: false
+      })
+    }, 50)
   }
 
   render() {
-
+    const { children } = this.props;
     return (
-      <div className='carousel-wrapper'>
+      <div>
+        <Wrapper>
+          <CarouselContainer
+            sliding={this.state.sliding}
+            direction={this.state.direction}
+          >
+            {children.map((child, index) => {
+              return (
+                <CarouselSlot
+                  key={index}
+                  order={this.getOrder(index)}
+                >
+                  {child}
+                </CarouselSlot>
+              )
+            })}
+          </CarouselContainer>
+        </Wrapper>
+        <Indicator
+          length={children.length}
+          position={this.state.position}
+          images={children}
+        >
 
-        {/* <h2>{this.state.productName}</h2> */}
+        </Indicator>
 
-
-        {/* <PrevArrow className='arrow' onClick={this.nextImage.bind(this)} /> */}
-        <div id='carousel'>
-          {this.state.images.map((image, i) => {
-            return <Image key={i} link={image} current={i} />
-          })}
-        </div>
-        {/* <NextArrow className='arrow' onClick={this.previousImage.bind(this)} /> */}
-
+        <button onClick={() => this.previousSlide()}>Previous</button>
+        <button onClick={() => this.nextSlide()}>Next</button>
       </div>
     )
   }
-};
+}
 
 export default Carousel;
