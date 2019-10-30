@@ -12,7 +12,8 @@
     "seed": "node database/seed.js",
     "test": "jest",
     "build:dev": "webpack -d --watch",
-    "start:dev": "nodemon server/index.js"
+    "start:dev": "nodemon server/index.js",
+    "start": "nodemon server/index.js"
   },
   "dependencies": {
     "@babel/core": "^7.6.2",

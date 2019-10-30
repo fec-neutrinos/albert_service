@@ -1,4 +1,4 @@
-const db = require('./config.js');
+const db = require('./index.js');
 const mongoose = require('mongoose');
 const Images = require('./schema/carousel.js');
 const faker = require('faker');

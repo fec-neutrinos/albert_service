@@ -4,7 +4,7 @@ const port = process.env.PORT || 3001;
 const path = require('path');
 const morgan = require('morgan');
 const cors = require('cors');
-const db = require('../database/config');
+const db = require('../database/index');
 const Images = require('../database/schema/carousel.js');
 let app = express();
 app.use('*', cors());
